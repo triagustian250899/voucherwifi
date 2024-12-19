@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Link with Ads</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .ad-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            text-align: center;
+            background: #f9f9f9;
+        }
+        button {
+            background-color: #1a73e8;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #155bb5;
+        }
+        #startSection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #mainContent {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="startSection">
+        <h1>Welcome</h1>
+        <button id="startButton">Start</button>
+    </div>
+
+    <div id="mainContent" class="container">
+        <div class="ad-section" id="adRedirect">
+            <p>Redirecting to sponsor...</p>
+        </div>
+
+        <h2>Selamat menggunakan voucher wifi</h2>
+        <p>Kode Voucher Anda: <span id="voucherCode"></span></p>
+    </div>
+
+    <script>
+        // Save the current date in local storage to track daily access
+        const currentDate = new Date().toLocaleDateString();
+        const lastAccessDate = localStorage.getItem('lastAccessDate');
+
+        // Predefined voucher code (manually set by admin)
+        const voucherCode = "ZZzz112233"; // Replace this with your desired voucher
+
+        document.getElementById('startButton').addEventListener('click', function() {
+            const adRedirect = document.getElementById('adRedirect');
+            const mainContent = document.getElementById('mainContent');
+            const startSection = document.getElementById('startSection');
+
+            if (lastAccessDate === currentDate) {
+                alert("Anda hanya dapat menerima 1 voucher per hari. Silakan coba lagi besok.");
+                return;
+            }
+
+            // Open ad link in new tab
+            const adWindow = window.open("https://bicolink.com/wKk8bTDr", "_blank");
+
+            if (adWindow) {
+                adWindow.focus();
+            } else {
+                alert("Please allow popups for this website to see the ad.");
+            }
+
+            setTimeout(() => {
+                adRedirect.style.display = 'none';
+                mainContent.style.display = 'block';
+
+                // Display predefined voucher code
+                document.getElementById('voucherCode').textContent = voucherCode;
+
+                // Save current date to prevent multiple accesses in one day
+                localStorage.setItem('lastAccessDate', currentDate);
+            }, 3000); // Wait 3 seconds
+
+            startSection.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
